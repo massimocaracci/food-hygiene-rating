@@ -1,0 +1,8 @@
+version: '3.2'
+services:
+  fhr-service:
+    image: pantasoft/food-hygiene-rating:latest
+    ports:
+      - "8080:8080"
+    environment:
+      spring_profiles_active: docker
