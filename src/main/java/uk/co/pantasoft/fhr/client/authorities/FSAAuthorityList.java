@@ -1,0 +1,46 @@
+package uk.co.pantasoft.fhr.client.authorities;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class FSAAuthorityList {
+
+    @JsonProperty("authorities")
+    private List<FSAAuthority> fsaAuthorityList;
+
+    public List<FSAAuthority> getFsaAuthorityList() {
+        return fsaAuthorityList;
+    }
+
+    public FSAAuthorityList() {
+    }
+
+    public FSAAuthorityList(List<FSAAuthority> fsaAuthorityList) {
+        this.fsaAuthorityList = fsaAuthorityList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FSAAuthorityList that = (FSAAuthorityList) o;
+
+        return fsaAuthorityList != null ? fsaAuthorityList.equals(that.fsaAuthorityList) : that.fsaAuthorityList == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return fsaAuthorityList != null ? fsaAuthorityList.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "FSAAuthorityList{" +
+                "fsaAuthorityList=" + fsaAuthorityList +
+                '}';
+    }
+}

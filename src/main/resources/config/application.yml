@@ -1,0 +1,7 @@
+server:
+  port: 8080
+
+service:
+  client:
+    foodhygieneRating:
+      uri: http://api.ratings.food.gov.uk

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Hygiene Rating</title>
+    <link href="assets/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/style.css" rel="stylesheet">
+    <script src="assets/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto">
+        <div class="inner">
+            <h3 class="masthead-brand">Pantasoft LTD Demo Project</h3>
+        </div>
+    </header>
+
+    <main class="inner cover" role="main">
+        <h1 class="cover-heading">Food Agency</h1>
+        <p class="lead">Please select the authority to show the hygiene ratings.</p>
+        <p><label> Authority:
+            <select class="js-authority-select">
+                <!-- auto filled in -->
+            </select>
+        </label></p>
+        <table class="table table-dark table-striped">
+            <thead>
+            <tr>
+                <th>Rating</th>
+                <th>Percentage</th>
+            </tr>
+            </thead>
+            <tbody class="js-authority-table">
+            <!-- auto filled in -->
+            </tbody>
+        </table>
+
+    </main>
+
+    <footer class="mastfoot mt-auto">
+        <div class="inner">
+            <p><a href="http://www.pantasoft.co.uk">Pantasoft LTD</a> - Pantasoft Demo Project.<a
+                    class="btn btn-secondary" href="http://www.pantasoft.co.uk">Find out more?</a></p>
+        </div>
+    </footer>
+</div>
+
+<script>
+    $(function () {
+
+        $('.js-authority-select').on('change', function () {
+            loadAuthority(this.value);
+        });
+
+        $.get('/api', {}, function (resp) {
+            var selectElem = $('.js-authority-select');
+            selectElem.html('');
+            $.each(resp, function (key, authority) {
+                if(key === 0){
+                    loadAuthority(authority.id);
+                }
+                selectElem.append('<option value="' + authority.id + '">' + authority.name + '</option>');
+            });
+
+        });
+
+
+    });
+
+    function loadAuthority(id) {
+        $.get('/api/' + id, {}, function (resp) {
+            var tableElem = $('.js-authority-table');
+            tableElem.html('');
+            $.each(resp, function (key, rating) {
+                tableElem.append('<tr><td>' + rating.name + '</td><td>' + rating.value.toFixed(1) + '%</td></tr>');
+            });
+        });
+    }
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
+

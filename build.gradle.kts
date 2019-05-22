@@ -42,10 +42,17 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.8.1")
     implementation("org.apache.commons:commons-collections4:4.0")
 
+    implementation("io.springfox:springfox-swagger2:2.7.0")
+    implementation("io.springfox:springfox-swagger-ui:2.7.0")
+
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+    implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
+    implementation("io.github.openfeign:feign-httpclient")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.hamcrest:hamcrest-all:1.3")
     testImplementation("junit:junit:4.12")
     testImplementation("com.github.javafaker:javafaker:0.14")
-    testImplementation("org.hamcrest:hamcrest-all:1.3")
     testImplementation("com.jayway.jsonpath:json-path-assert:2.4.0")
 }
 

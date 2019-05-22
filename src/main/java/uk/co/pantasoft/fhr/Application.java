@@ -4,8 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
+@EnableFeignClients
 public class Application {
 
     static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
@@ -16,4 +18,8 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+//    @Bean
+//    public RestTemplate getRestTemplateBean() {
+//        return new RestTemplate();
+//    }
 }
