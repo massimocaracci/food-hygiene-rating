@@ -11,15 +11,15 @@ public class FSAAuthorityList {
     @JsonProperty("authorities")
     private List<FSAAuthority> fsaAuthorityList;
 
-    public List<FSAAuthority> getFsaAuthorityList() {
-        return fsaAuthorityList;
-    }
-
     public FSAAuthorityList() {
     }
 
     public FSAAuthorityList(List<FSAAuthority> fsaAuthorityList) {
         this.fsaAuthorityList = fsaAuthorityList;
+    }
+
+    public List<FSAAuthority> getFsaAuthorityList() {
+        return fsaAuthorityList;
     }
 
     @Override
