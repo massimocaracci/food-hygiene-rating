@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.co.pantasoft.fhr.client.FoodHygieneRatingApi;
+import uk.co.pantasoft.fhr.client.Ratings.FSARatingItemResponse;
 import uk.co.pantasoft.fhr.client.authorities.FSAAuthority;
 import uk.co.pantasoft.fhr.client.authorities.FSAAuthorityList;
 import uk.co.pantasoft.fhr.client.establishments.FSAEstablishmentItem;
@@ -11,7 +12,6 @@ import uk.co.pantasoft.fhr.client.establishments.FSAEstablishments;
 import uk.co.pantasoft.fhr.service.model.Authority;
 import uk.co.pantasoft.fhr.service.model.AuthorityRatingItem;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +20,7 @@ public class RatingService {
 
     static final Logger LOGGER = LoggerFactory.getLogger(RatingService.class);
 
-    FoodHygieneRatingApi client;
+    private FoodHygieneRatingApi client;
 
     public RatingService(FoodHygieneRatingApi client) {
         this.client = client;
@@ -40,43 +40,9 @@ public class RatingService {
 
         FSAEstablishments restRes = client.retrieveEstablishmentRatingsByAutority(authorityId);
 
-        var processorStart = System.currentTimeMillis();
-
-        var totRatings = restRes.getEstablishments().size();
-
-        var rating5 = getTotRating(restRes, 5);
-        LOGGER.info("Tot 5-star: {}", rating5);
-        var rating4 = getTotRating(restRes, 4);
-        LOGGER.info("Tot 4-star: {}", rating4);
-        var rating3 = getTotRating(restRes, 3);
-        LOGGER.info("Tot 3-star: {}", rating3);
-        var rating2 = getTotRating(restRes, 2);
-        LOGGER.info("Tot 2-star: {}", rating2);
-        var rating1 = getTotRating(restRes, 1);
-        LOGGER.info("Tot 1-star: {}", rating1);
-
-        var ratingExempt = restRes.getEstablishments().stream()
-                .map(e -> e.getRatingValue())
-                .filter(p -> p.equalsIgnoreCase("exempt"))
-                .count();
-        LOGGER.info("Tot ratingExempt: {}", ratingExempt);
-
-        var ratingOthers = totRatings - (rating5 + rating4 + rating3 + rating2 + rating1 + ratingExempt);
-        LOGGER.info("Other ratings: {}", ratingOthers);
-        LOGGER.debug("Total ratings check: {} = {}", totRatings, rating5 + rating4 + rating3 + rating2 + rating1 + ratingExempt + ratingOthers);
-
-
-        LOGGER.info("Data Processing Time : {} milliseconds.", System.currentTimeMillis() - processorStart);
-
-        return
-                Arrays.asList(
-                        new AuthorityRatingItem("5-star", (rating5 * 100) / totRatings),
-                        new AuthorityRatingItem("4-star", (rating4 * 100) / totRatings),
-                        new AuthorityRatingItem("3-star", (rating3 * 100) / totRatings),
-                        new AuthorityRatingItem("2-star", (rating2 * 100) / totRatings),
-                        new AuthorityRatingItem("1-star", (rating1 * 100) / totRatings),
-                        new AuthorityRatingItem("Exempt", ((ratingExempt + ratingOthers) * 100) / totRatings)
-                );
+        return client.retrieveRatings().getRatings().stream()
+                .map((FSARatingItemResponse r) -> new AuthorityRatingItem(r.getRatingName(), ratingPercentage(restRes, r.getRatingName())))
+                .collect(Collectors.toList());
     }
 
     private long getTotRating(FSAEstablishments establishments, int starsRating) {
@@ -84,6 +50,29 @@ public class RatingService {
                 .filter((e) -> e.getRatingValue().matches("\\d+"))  // Only select Digits
                 .mapToInt((FSAEstablishmentItem e) -> Integer.parseInt(e.getRatingValue()))  // Convert to Integers
                 .filter(r -> r == starsRating)
+                .count();
+    }
+
+    private long ratingPercentage(FSAEstablishments establishments, String ratingName) {
+
+        var ratingSize = ratingTypeCount(establishments, ratingName);
+
+        var establishmentSize = establishments.getEstablishments().size();
+
+        LOGGER.info("Rating - {}: {} ", ratingName, ratingSize);
+
+        var percentage = (ratingSize * 100) / establishments.getEstablishments().size();
+
+        LOGGER.info("(ratingSize:{} * 100) / establishmentSize:{}", ratingSize, establishmentSize);
+
+
+        return percentage;
+    }
+
+    private long ratingTypeCount(FSAEstablishments establishments, String ratingName) {
+        return establishments.getEstablishments().stream()
+                .map(FSAEstablishmentItem::getRatingValue) // Convert to Integers
+                .filter(e -> e.equalsIgnoreCase(ratingName))
                 .count();
     }
 }

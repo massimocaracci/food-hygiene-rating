@@ -2,7 +2,6 @@ package uk.co.pantasoft.fhr.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
-import com.jayway.jsonpath.JsonPath;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,10 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.not;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ActiveProfiles("test")
@@ -54,46 +52,17 @@ public class RatingResourceIntegrationTest {
 
 
     @Test
-    public void retrieveAuthorities() throws Exception{
+    public void retrieveAuthorities() throws Exception {
 
         mvc.perform(get("/api"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(CONTENT_TYPE_UTF8))
-                .andExpect(jsonPath("$",  Matchers.is(not(empty()))))
-                .andExpect(jsonPath("$[0].id",  Matchers.is(not(empty()))))
+                .andExpect(jsonPath("$", Matchers.is(not(empty()))))
+                .andExpect(jsonPath("$[0].id", Matchers.is(not(empty()))))
                 .andExpect(jsonPath("$[0].name", Matchers.is(not(empty()))));
     }
 
     @Test
     public void retrieveAuthority() {
     }
-
-//    @Test
-//    public void addPass() throws Exception {
-//
-//        var customerId = givenCustomer();
-//
-//        var addPass = new AddPassRequest();
-//        addPass.setVendorId("V-1234");
-//        addPass.setPassLength(7);
-//        addPass.setPassCity("Berlin");
-//        addPass.setPassId("P-1234");
-//
-//        var requestJson = objectMapper.writeValueAsString(addPass);
-//        mvc.perform(post("/customer/" + customerId + "/pass/add")
-//                .content(requestJson)
-//                .contentType(CONTENT_TYPE_UTF8))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(CONTENT_TYPE_UTF8))
-//                .andExpect(jsonPath("$.id", Matchers.is(not(empty()))))
-//                .andExpect(jsonPath("$.city", Matchers.is("Berlin")))
-//                .andExpect(jsonPath("$.createdDate", Matchers.is(not(empty()))))
-//                .andExpect(jsonPath("$.passRefId", Matchers.is("P-1234")))
-//                .andExpect(jsonPath("$.vendorId", Matchers.is("V-1234")))
-//                .andExpect(jsonPath("$.vendorValidated", Matchers.is(false)))
-//                .andExpect(jsonPath("$.cancelled", Matchers.is(false)))
-//                .andExpect(jsonPath("$.length", Matchers.is(7)));
-//    }
-
 }
