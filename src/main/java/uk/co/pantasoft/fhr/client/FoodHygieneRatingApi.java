@@ -27,9 +27,12 @@ public class FoodHygieneRatingApi {
 
     public FSAAuthorityList retrieveAuthorities() {
 
-        LOGGER.info("Retrieving Authorities...");
+        LOGGER.info("Retrieving Authorities... {}");
+
+        var timeStart = System.currentTimeMillis();
         var res = authorityClient.retrieveAuthorities(API_VERSION);
 
+        LOGGER.info("API retrieveAuthorities Processing Time : {} seconds.", (System.currentTimeMillis() - timeStart) / 1000);
         LOGGER.info("res Status Code: {}", res.getStatusCode());
 
         return res.getBody();
@@ -40,7 +43,7 @@ public class FoodHygieneRatingApi {
         LOGGER.info("Calling the API to retrieve establishment rating given the AuthorityId: {}", authorityId);
         var timeStart = System.currentTimeMillis();
         var res = establishmentsClient.retrieveEstablishmentsByAuthorityId(API_VERSION, authorityId);
-        LOGGER.info("API Processing Time : {} seconds.", (System.currentTimeMillis() - timeStart) / 1000);
+        LOGGER.info("API  retrieveEstablishmentRatingsByAutority Processing Time : {} seconds.", (System.currentTimeMillis() - timeStart) / 1000);
         return res.getBody();
     }
 
@@ -49,7 +52,7 @@ public class FoodHygieneRatingApi {
         LOGGER.info("Calling the API to retrieve Ratings: returns details of all ratings, results are unbound.");
         var timeStart = System.currentTimeMillis();
         var res = ratingsClient.retrieveRatings(API_VERSION);
-        LOGGER.info("API Processing Time : {} seconds.", (System.currentTimeMillis() - timeStart) / 1000);
+        LOGGER.info("API retrieveRatings Processing Time : {} seconds.", (System.currentTimeMillis() - timeStart) / 1000);
         return res.getBody();
     }
 

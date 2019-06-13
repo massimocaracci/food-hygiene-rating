@@ -39,7 +39,7 @@ public class FSAFeignConfiguration {
     public RequestInterceptor requestTokenBearerInterceptor() {
         return requestTemplate -> {
             // Do what you want to do
-            LOGGER.info("Do what you want to do");
+            LOGGER.debug("Do what you want to do");
         };
     }
 
