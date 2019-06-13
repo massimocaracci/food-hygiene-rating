@@ -1,9 +1,11 @@
 package uk.co.pantasoft.fhr.service.model;
 
+import java.io.Serializable;
+
 /**
  * A single rating item.
  */
-public class AuthorityRatingItem {
+public class AuthorityRatingItem implements Serializable {
 
     private final String name;
     private final double value;

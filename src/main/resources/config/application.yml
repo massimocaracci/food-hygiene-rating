@@ -1,5 +1,7 @@
 server:
   port: 8080
+  cache:
+    type: redis
 
 # Application logging
 logging:

@@ -27,7 +27,6 @@ public class RatingService {
         this.client = client;
     }
 
-    @Cacheable("authorities")
     public List<Authority> retrieveAuthorities() {
 
         FSAAuthorityList authorities = client.retrieveAuthorities();
@@ -38,7 +37,7 @@ public class RatingService {
                         .collect(Collectors.toList());
     }
 
-    @Cacheable("authorityRatings")
+    @Cacheable(value = "authorityRatings", key = "#authorityId")
     public List<AuthorityRatingItem> retrieveAuthorityRatings(int authorityId) {
 
         FSAEstablishments restRes = client.retrieveEstablishmentRatingsByAutority(authorityId);

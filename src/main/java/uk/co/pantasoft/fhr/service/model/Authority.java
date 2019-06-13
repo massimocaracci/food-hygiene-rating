@@ -1,6 +1,8 @@
 package uk.co.pantasoft.fhr.service.model;
 
-public class Authority {
+import java.io.Serializable;
+
+public class Authority implements Serializable {
 
     private final int id;
     private final String name;

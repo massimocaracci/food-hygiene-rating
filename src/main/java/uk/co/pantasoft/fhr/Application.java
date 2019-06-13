@@ -9,7 +9,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-@EnableCaching
 public class Application {
 
     static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
@@ -19,9 +18,4 @@ public class Application {
         LOGGER.info("Application is starting");
         SpringApplication.run(Application.class, args);
     }
-
-//    @Bean
-//    public RestTemplate getRestTemplateBean() {
-//        return new RestTemplate();
-//    }
 }

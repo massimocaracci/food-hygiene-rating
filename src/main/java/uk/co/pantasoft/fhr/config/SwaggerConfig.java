@@ -1,4 +1,4 @@
-package uk.co.pantasoft.fhr;
+package uk.co.pantasoft.fhr.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
