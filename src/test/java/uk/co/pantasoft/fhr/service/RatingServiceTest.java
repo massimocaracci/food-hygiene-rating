@@ -1,6 +1,7 @@
 package uk.co.pantasoft.fhr.service;
 
 import com.github.javafaker.Faker;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Ignore("Cache test")
 public class RatingServiceTest {
 
     @Rule
