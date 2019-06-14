@@ -1,7 +1,17 @@
 server:
   port: 8080
+  redis:
+    host: localhost
+    port: 6379
+
   cache:
     type: redis
+    redis:
+      cache-null-values: false
+      time-to-live: 600000
+      use-key-prefix: false
+
+
 
 # Application logging
 logging:
@@ -14,3 +24,4 @@ service:
   client:
     foodhygieneRating:
       uri: http://api.ratings.food.gov.uk
+

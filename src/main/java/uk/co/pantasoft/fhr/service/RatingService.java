@@ -27,6 +27,7 @@ public class RatingService {
         this.client = client;
     }
 
+    @Cacheable("authorities")
     public List<Authority> retrieveAuthorities() {
 
         FSAAuthorityList authorities = client.retrieveAuthorities();
