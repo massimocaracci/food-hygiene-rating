@@ -2,6 +2,7 @@ package uk.co.pantasoft.fhr.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import uk.co.pantasoft.fhr.client.FoodHygieneRatingApi;
 import uk.co.pantasoft.fhr.client.Ratings.FSARatingItemResponse;
@@ -26,6 +27,7 @@ public class RatingService {
         this.client = client;
     }
 
+    @Cacheable("authorities")
     public List<Authority> retrieveAuthorities() {
 
         FSAAuthorityList authorities = client.retrieveAuthorities();
@@ -36,6 +38,7 @@ public class RatingService {
                         .collect(Collectors.toList());
     }
 
+    @Cacheable("authorityRatings")
     public List<AuthorityRatingItem> retrieveAuthorityRatings(int authorityId) {
 
         FSAEstablishments restRes = client.retrieveEstablishmentRatingsByAutority(authorityId);
@@ -59,11 +62,11 @@ public class RatingService {
 
         var establishmentSize = establishments.getEstablishments().size();
 
-        LOGGER.info("Rating - {}: {} ", ratingName, ratingSize);
+        LOGGER.debug("Rating - {}: {} ", ratingName, ratingSize);
 
         var percentage = (ratingSize * 100) / establishments.getEstablishments().size();
 
-        LOGGER.info("(ratingSize:{} * 100) / establishmentSize:{}", ratingSize, establishmentSize);
+        LOGGER.debug("(ratingSize:{} * 100) / establishmentSize:{}", ratingSize, establishmentSize);
 
 
         return percentage;
